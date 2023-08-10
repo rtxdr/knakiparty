@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export var MAXSPEED = 120
-@export var SPEEDMULT = 2
+@export var SPEEDMULT = 1
 @export var ACCELERATRION = 3000
 @export var FRICTION = 2400
 
@@ -20,28 +20,29 @@ var PROJECTILE: PackedScene = preload("res://object/rock.tscn")
 @onready var axis = Vector2.ZERO
 
 var mouse_position = null
+var shooting: bool
+
+#func created(username):
+#	$Label.text = username
+
+func _ready():
+	if not is_multiplayer_authority(): return
+	camera.make_current()
+	$target.show()
+
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
 
 func updatestats():
 	shoottimer.wait_time = reloadtime + (shootspeed * clipsize)
 	shootintervaltimer.wait_time = shootspeed
 
-func _ready():
-	updatestats()
-
-func _input(event):
-	if Input.is_action_just_pressed("move_left"):
-		playersprite.scale[0] = -1.5
-	if Input.is_action_just_pressed("move_right"):
-		playersprite.scale[0] = 1.5
-
 func _physics_process(delta):
+	if not is_multiplayer_authority(): return
 	move(delta)
 	updatestats()
 	var velocitytotal = abs(velocity[0])+abs(velocity[1])
-	if velocity:
-		playersprite.play("walk",SPEEDMULT)
-	else:
-		playersprite.play("default")
+	
 	
 	#RAYCAST POINT TO MOUSE CODE
 	mouse_position = camera.get_local_mouse_position()
@@ -49,9 +50,27 @@ func _physics_process(delta):
 	$target.position = mouse_position
 	#END
 	
+	animateplayer.rpc(shooting,Input.is_action_just_pressed("move_left"),
+	Input.is_action_just_pressed("move_right"), velocity, SPEEDMULT)
+	
 	#debug update
-	$RichTextLabel.text = (str(velocitytotal) + "\n" + str(shoottimer.time_left) + "\n" +
+	$debug.text = (str(velocitytotal) + "\n" + str(shoottimer.time_left) + "\n" +
 	str(shootintervaltimer.time_left)+"\n"+str(clipsize))
+
+@rpc("call_local")
+func animateplayer(state,left,right,vel,smult):
+	if left:
+		playersprite.scale[0] = -1.5
+	if right:
+		playersprite.scale[0] = 1.5
+		
+	if state:
+		playersprite.play("throw")
+	else:
+		if vel:
+			playersprite.play("walk",smult)
+		else:
+			playersprite.play("default")
 	
 func get_input_axis():
 	axis.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
@@ -80,8 +99,14 @@ func apply_movement(accel):
 	velocity = velocity.limit_length(MAXSPEED*SPEEDMULT)
 
 func _on_shoot_timeout():
+	if not is_multiplayer_authority(): return
+	shootrock.rpc(clipsize)
+
+@rpc("call_local")
+func shootrock(clip):
 	if PROJECTILE:
-		for i in range(clipsize):
+		shooting = true
+		for i in range(clip):
 			shootintervaltimer.start()
 			var rock = PROJECTILE.instantiate()
 			get_tree().current_scene.add_child(rock)
@@ -90,3 +115,4 @@ func _on_shoot_timeout():
 			rock.rotation = raycast.rotation
 			if clipsize > 1:
 				await shootintervaltimer.timeout
+		shooting = false

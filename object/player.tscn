@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://blsg5yr1g2wu3"]
+[gd_scene load_steps=9 format=3 uid="uid://blsg5yr1g2wu3"]
 
 [ext_resource type="Script" path="res://object/player.gd" id="1_rm1i3"]
 [ext_resource type="Texture2D" uid="uid://bpwdavks7oel1" path="res://sprite/blue/bluidle.png" id="2_q2gwf"]
@@ -39,14 +39,56 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enimc"]
 size = Vector2(20, 24)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ejow8"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath("shootinterval:wait_time")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath("shoot:wait_time")
+properties/2/spawn = true
+properties/2/sync = true
+properties/2/watch = false
+properties/3/path = NodePath("RayCast2D:rotation")
+properties/3/spawn = true
+properties/3/sync = true
+properties/3/watch = false
+properties/4/path = NodePath(".:SPEEDMULT")
+properties/4/spawn = true
+properties/4/sync = true
+properties/4/watch = false
+
 [node name="player" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_rm1i3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_2omea")
 
+[node name="name" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -54.0
+offset_right = 21.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+text = "playa"
+
 [node name="target" type="Sprite2D" parent="."]
+visible = false
 scale = Vector2(2, 2)
 texture = ExtResource("5_u4xql")
 
@@ -66,7 +108,8 @@ autostart = true
 [node name="shootinterval" type="Timer" parent="."]
 wait_time = 0.3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="debug" type="RichTextLabel" parent="."]
+visible = false
 offset_left = 69.0
 offset_top = -68.0
 offset_right = 219.0
@@ -74,5 +117,8 @@ offset_bottom = 86.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "yep"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ejow8")
 
 [connection signal="timeout" from="shoot" to="." method="_on_shoot_timeout"]
