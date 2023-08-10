@@ -23,3 +23,5 @@ layer_0/tile_data = PackedInt32Array(131074, 0, 0, 131075, 0, 0, 196611, 0, 0, 1
 [node name="player" parent="." instance=ExtResource("2_lunxl")]
 position = Vector2(593, 432)
 SPEEDMULT = 1
+shootspeed = 0.3
+clipsize = 6
