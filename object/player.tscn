@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://blsg5yr1g2wu3"]
+
+[ext_resource type="Texture2D" uid="uid://cwshw3rxpcveh" path="res://texture/grid32.png" id="1_5vo7f"]
+[ext_resource type="Script" path="res://object/player.gd" id="1_rm1i3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_enimc"]
+
+[node name="player" type="CharacterBody2D"]
+script = ExtResource("1_rm1i3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_5vo7f")
+
+[node name="testsprite" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_5vo7f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_enimc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+
+[node name="shoot" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="shoot" to="." method="_on_shoot_timeout"]
