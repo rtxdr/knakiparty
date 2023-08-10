@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ds1t46217b0xu"]
+[gd_scene load_steps=5 format=3 uid="uid://ds1t46217b0xu"]
 
 [ext_resource type="Script" path="res://object/rock.gd" id="1_cvn7l"]
 [ext_resource type="Texture2D" uid="uid://csgq6v3oce123" path="res://sprite/Rock.png" id="2_krrjt"]
+[ext_resource type="AudioStream" uid="uid://q8hch3rn8vjm" path="res://sound/throw.mp3" id="3_2ybjw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lr8xa"]
 radius = 18.0
@@ -19,5 +20,9 @@ shape = SubResource("CircleShape2D_lr8xa")
 [node name="death" type="Timer" parent="."]
 wait_time = 0.383
 autostart = true
+
+[node name="spawnsound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_2ybjw")
+autoplay = true
 
 [connection signal="timeout" from="death" to="." method="_on_timer_timeout"]
