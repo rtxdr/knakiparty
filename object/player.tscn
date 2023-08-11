@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://blsg5yr1g2wu3"]
+[gd_scene load_steps=10 format=3 uid="uid://blsg5yr1g2wu3"]
 
 [ext_resource type="Script" path="res://object/player.gd" id="1_rm1i3"]
 [ext_resource type="Texture2D" uid="uid://bpwdavks7oel1" path="res://sprite/blue/bluidle.png" id="2_q2gwf"]
 [ext_resource type="Texture2D" uid="uid://dtrxq1fgh0r7t" path="res://sprite/blue/bluthrow.png" id="3_aij7h"]
 [ext_resource type="Texture2D" uid="uid://dx7i4ikt627rn" path="res://sprite/blue/bluwalk1.png" id="4_ijrue"]
 [ext_resource type="Texture2D" uid="uid://nvyg0jorw8au" path="res://sprite/ui/target.png" id="5_u4xql"]
+[ext_resource type="AudioStream" uid="uid://blxf1eiiv0aww" path="res://sound/hurt.mp3" id="6_snyw1"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2omea"]
 animations = [{
@@ -62,6 +63,7 @@ properties/4/sync = true
 properties/4/watch = false
 
 [node name="player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 3
 slide_on_ceiling = false
 script = ExtResource("1_rm1i3")
 
@@ -117,6 +119,9 @@ offset_bottom = 86.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "yep"
+
+[node name="dmg" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_snyw1")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ejow8")

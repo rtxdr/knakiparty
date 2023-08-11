@@ -93,6 +93,9 @@ func move(delta):
 	
 	move_and_slide()
 
+func damage(hp):
+	$dmg.play()
+
 func apply_friction(amt):
 	if velocity.length() > amt:
 		velocity -= velocity.normalized() * amt
