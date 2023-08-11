@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var mainmenu = $CanvasLayer/MainMenu
+@onready var mainmenu = $CanvasLayer
 @onready var addressentry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 
 const Player = preload("res://object/player.tscn")
@@ -25,4 +25,4 @@ func _on_join_btn_pressed():
 func add_player(peer_id):
 	var player = Player.instantiate()
 	player.name = str(peer_id)
-	add_child(player)
+	$players.add_child(player)

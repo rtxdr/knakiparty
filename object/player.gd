@@ -10,6 +10,7 @@ extends CharacterBody2D
 @export var clipsize = 5
 
 var PROJECTILE: PackedScene = preload("res://object/rock.tscn")
+var ZOMBIE: PackedScene = preload("res://object/monster/basiczombie.tscn")
 
 @onready var raycast = $RayCast2D
 @onready var camera = $Camera2D
@@ -46,9 +47,14 @@ func _physics_process(delta):
 	
 	#RAYCAST POINT TO MOUSE CODE
 	mouse_position = camera.get_local_mouse_position()
-	raycast.look_at($target.global_position)
+	raycast.look_at(mouse_position)
 	$target.position = mouse_position
 	#END
+	
+	if Input.is_action_just_pressed("debugcreate"):
+		var zombie = ZOMBIE.instantiate()
+		get_tree().current_scene.get_child(4).add_child(zombie)
+		zombie.position = mouse_position
 	
 	animateplayer.rpc(shooting,Input.is_action_just_pressed("move_left"),
 	Input.is_action_just_pressed("move_right"), velocity, SPEEDMULT)

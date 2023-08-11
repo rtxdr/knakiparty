@@ -36,7 +36,7 @@ animations = [{
 "speed": 7.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_enimc"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0vrss"]
 size = Vector2(20, 24)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ejow8"]
@@ -61,8 +61,8 @@ properties/4/spawn = true
 properties/4/sync = true
 properties/4/watch = false
 
-[node name="player" type="CharacterBody2D"]
-collision_layer = 2
+[node name="player" type="CharacterBody2D" groups=["player"]]
+slide_on_ceiling = false
 script = ExtResource("1_rm1i3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -94,7 +94,7 @@ texture = ExtResource("5_u4xql")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 12)
-shape = SubResource("RectangleShape2D_enimc")
+shape = SubResource("RectangleShape2D_0vrss")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2.5, 2.5)
